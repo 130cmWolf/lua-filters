@@ -235,3 +235,30 @@ Individual cell alignment is also supported via the `align` attribute.
 Expected values are `l`, `r`, `c` for left, right and center respectively.
 (Please mind that contrary to [column alignments](#column-alignments)
 this attribute is singular).
+
+## auto number 
+
+```
+:::{.list-table number=1}
+   * - row 1, column 1
+     - row 1, column 2
+     - row 1, column 3
+
+   * - row 2, column 1
+     -
+     - row 2, column 3
+
+   * - row 3, column 1
+     - row 3, column 2
+:::
+```
+
+The `number` will be the starting value for the auto-numbering.
+results in the following table:
+
+|   | row 1, column 1 | row 1, column 2 | row 1, column 3 |
+|---|-----------------|-----------------|-----------------|
+| 1 | row 2, column 1 |                 | row 2, column 3 |
+| 2 | row 3, column 1 | row 3, column 2 |                 |
+
+The `header-cols` start with an auto numbered column.

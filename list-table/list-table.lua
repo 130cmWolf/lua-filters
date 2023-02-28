@@ -140,6 +140,9 @@ local function process(div)
     local header_col_count = tonumber(div.attr.attributes['header-cols']) or 0
     div.attr.attributes['header-cols'] = nil
 
+    local number_col = tonumber(div.attr.attributes['number']) or nil
+    div.attr.attributes['number'] = nil
+
     local column_count = 0
     for i = 1, #row_cells(rows[1] or {}) do
         column_count = column_count + row_cells(rows[1])[i].col_span
@@ -149,6 +152,20 @@ local function process(div)
     local thead_rows = {}
     for i = 1, header_row_count do
         table.insert(thead_rows, table.remove(rows, 1))
+    end
+
+    if number_col ~= nil then
+        number_col = number_col - 1
+        local number_colspec = {pandoc.AlignDefault, nil}
+        table.insert(colspecs, 1, number_colspec)
+        for i = 1, #rows do
+            local cells = row_cells(rows[i])
+            table.insert(cells, 1, pandoc.Cell({pandoc.Str(tostring(i + number_col))}))
+        end
+        for i = 1, #thead_rows do
+            local cells = row_cells(thead_rows[i])
+            table.insert(cells, 1, pandoc.Cell({pandoc.Str("")}))
+        end
     end
 
     return pandoc.Table(
